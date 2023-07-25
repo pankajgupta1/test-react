@@ -33,3 +33,25 @@ test('onAddUserFunction is called', async () => {
   expect(mock).toHaveBeenCalled()
   expect(mock).toHaveBeenCalledWith({name: 'Jane', email: 'jane@jane.com'})
 })
+
+test('input fields are emptied after submitting form', async () => {
+  render(<UserForm onUserAdd={() => {}} />)
+
+  const nameInput = screen.getByRole('textbox', {
+    name: /name/i
+  })
+  const emailInput = screen.getByRole('textbox', {
+    name: /email/i
+  })
+  user.click(nameInput)
+  user.keyboard('jane')
+  user.click(emailInput)
+  user.keyboard('jane@jane.com')
+
+  const button = screen.getByRole('button')
+  await user.click(button)
+
+  expect(nameInput).toHaveValue('')
+  expect(emailInput).toHaveValue('')
+
+})

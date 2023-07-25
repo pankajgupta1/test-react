@@ -1,8 +1,21 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import userEvent from '@testing-library/user-event';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('receive a user and able to show that in the list', async () => {
+ render(<App />)
+  const nameInput = screen.getByRole('textbox', {name: /name/i})
+  const emailInput = screen.getByRole('textbox', {name: /email/i})
+  const button = screen.getByRole('button')
+  userEvent.click(nameInput);
+  await userEvent.keyboard('jane')
+  userEvent.click(emailInput)
+  await userEvent.keyboard('jane@jane.com')
+  await userEvent.click(button)
+  const name = screen.getByRole('cell', {name: 'jane'})
+  const email = screen.getByRole('cell', {name: 'jane@jane.com'})
+  
+  expect(name).toBeInTheDocument()
+  expect(email).toBeInTheDocument()
+
 });
